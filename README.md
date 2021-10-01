@@ -44,14 +44,14 @@ https://mocki.io/fake-json-api
 因為沒有開發多少功能所以架構簡單，也沒有拆分 component 成新的 js 檔
 
 style 也寫在 App.js。
+* App <- state 放在 App
+* FlatList  
+  * ListItem
+* MenuButtom
 
-        App <- state 放在 App
-        
-        / \
-        
-FlatList   MenuButtom
-    /
-ListItem
+   
+
+
     
 
         
