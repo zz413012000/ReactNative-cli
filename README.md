@@ -48,9 +48,9 @@ style 也寫在 App.js。
         App <- state 放在 App
         
         / \
-        
 FlatList   MenuButtom
-
     /
     
 ListItem
+        
+
