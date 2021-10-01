@@ -1,10 +1,15 @@
 # ReactNative-cli
 
 ##　開發的功能
+
 1.使用 ReactNative-cli開發
+
 2.app選單點擊打開、收起
+
 3.串接下面網址的一組列表資料api，並可瀏覽
+
 https://mocki.io/fake-json-api
+
 
 ## 未完成項目
 + 下方APP tab切換頁面
