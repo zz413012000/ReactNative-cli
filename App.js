@@ -1,134 +1,107 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component, useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
   Text,
-  Button,
   TouchableOpacity,
   FlatList,
-  TextInput,
 } from 'react-native';
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  touchText: {
-    fontSize: 20,
-  },
   title: {
     fontSize: 32
+  },
+  text: {
+    fontSize: 20,
+    color: "#aaa"
+  },
+  container: {
+    flex: 1,
   },
   FlatList: {
     borderWidth: 5,
     flex: 0.5,
+    margin: 10,
   },
-  itemView: {
-    borderWidth: 3,
-    flex: 0.3,
-    borderTopLeftRadius: 20,
-    marginTop: 20,
-    width: 200,
-    justifyContent: "flex-start"
-  },
-  button: {
-    width: 200
+  ListItem:{ 
+    borderWidth: 1,
+    marginTop: 10,
+    marginRight: 10, 
+    marginLeft: 10, 
+    padding: 10 
   },
   touchView: {
-    // justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 5,
-    flexDirection:"row"
+    margin: 10,
+    // borderWidth: 5,
+    flexDirection: "row"
   },
   touch: {
     borderWidth: 2
-  }
+  },
+  touchText: {
+    fontSize: 20,
+  },
 });
-const DATA = [
-  {
-    id: '0',
-    title: 'First Item'
-  },
-  {
-    id: '1',
-    title: 'Second Item'
-  },
-  {
-    id: '2',
-    title: 'Third Item'
-  },
-];
-const Item = ({ title }) => {
+const ListItem = ({ item }) => {
   return (
-    <View style={styles.itemView}>
-      <Text style={styles.title}>
-        {title}
-      </Text>
+    <View style={styles.ListItem}>
+      <View>
+        <Text style={styles.title}>{`Name:${item.name}`}</Text>
+      </View>
+      <View>
+        <Text style={styles.text}>{`City:${item.city}`}</Text>
+      </View>
     </View>
   )
 }
-const ReadButton = (props) => {
-  const [isCilcked, setIsclicked] = useState(false);
+const MenuButton = (props) => {
   return (
     <TouchableOpacity
-      style={[styles.touch,props.buttonStyle]}
+      style={[styles.touch, props.buttonStyle]}
       onPress={() => {
         console.log('click');
-        setIsclicked(!isCilcked)
+        props.setIsclicked(!props.isCilcked)
       }}
     >
-      <Text style={[styles.touchText, isCilcked ? { color: 'red' } : null]}> TouchableOpacity </Text>
+      <Text style={[styles.touchText, props.isCilcked ? { color: 'red' } : null]}> 按我打開 List </Text>
     </TouchableOpacity>
   )
 }
 const App = () => {
-  const [text, setText] = useState('eat');
-  const [list,setList]=useState(null);
+  const [list, setList] = useState(null);
+  const [isCilcked, setIsclicked] = useState(false);
   const renderItem = ({ item }) => {
-    console.log("item",item);
-    return <Item title={item.name}></Item>
+    console.log("item", item);
+    return (<>
+      <ListItem item={item} />
+    </>)
   }
-  useEffect(()=>{
-    let src="https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8";
+  useEffect(() => {
+    let src = "https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8";
     fetch(src)
-    .then(res=>res.json())
-    .then(
-      (result)=>{
-        console.log("result",result);
-        setList(result);
-        console.log("useEffect",list);
-      }
-    )
-  },[]);
+      .then(res => res.json())
+      .then(
+        (result) => {
+          setList(result);
+        }
+      )
+  }, []);
   return (
     <View
       style={styles.container}
     >
-      {console.log("render",list)}
       <View style={styles.touchView}>
-        <ReadButton buttonStyle={{ flex: 1, backgroundColor: '#ddd' }}/>
-        <ReadButton buttonStyle={{ flex: 1, backgroundColor: '#ddd' }}/>
+        <MenuButton
+          buttonStyle={{ flex: 1, borderRadius: 50 }}
+          isCilcked={isCilcked}
+          setIsclicked={setIsclicked}
+        />
       </View>
-      <Button
-        onPress={function () { alert('按到我了') }}
-        title="Button!!"
-        style={styles.button}
-      />
-      <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-        onChangeText={(text) => setText(text)}
-        value={text}
-      />
       <FlatList
         data={list}
         renderItem={renderItem}
-        // keyExtractor={item => item.name}
-        style={styles.FlatList}
+        keyExtractor={item => item.name}
+        style={[isCilcked ? styles.FlatList : { display: 'none' }]}
       />
     </View>
   );
